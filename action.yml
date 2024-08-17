@@ -1,4 +1,4 @@
-# .github/actions/autograder-wrapper/action.yml
+# .github/actions/autograder_wrapper/action.yml
 name: GHC Autograder Wrapper
 description: A wrapper for GHC autograder actions that fails if the test doesn't pass
 inputs:
@@ -71,6 +71,7 @@ runs:
 
     - name: Set Output Based on Language
       id: set-output
+      shell: bash
       run: |
         if [[ "${{ inputs.grader }}" == "python" ]]; then
           echo "::set-output name=result::${{ steps.python-autograder.outputs.result }}"
@@ -81,6 +82,8 @@ runs:
         fi
 
     - name: Pass?
+      id: pass-check
+      shell: bash
       run: |
         # Decode the Base64 string
         decoded=$(echo "${{ steps.set-output.outputs.result }}" | base64 --decode)
