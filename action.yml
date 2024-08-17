@@ -1,0 +1,96 @@
+# .github/actions/autograder-wrapper/action.yml
+name: GHC Autograder Wrapper
+description: A wrapper for GHC autograder actions that fails if the test doesn't pass
+inputs:
+  grader:
+    description: which grader to use (e.g., "io", "python", "c").
+    required: true
+  test-name:
+    description: The name of the test
+    required: true
+  command:
+    description: The command to run the test
+    required: false
+  setup-command:
+    description: Command to run prior to test
+    required: false
+    default: ""
+  input:
+    description: The input for the test
+    required: false
+  expected-output:
+    description: The expected output of the test
+    required: false
+  comparison-method:
+    description: The method to compare outputs
+    required: false
+    default: "contains"
+  timeout:
+    description: The timeout for the test
+    required: false
+    default: 1
+outputs:
+  result:
+    description: The result of the autograder, b64 encoded
+runs:
+  using: "composite"
+  steps:
+    - name: python-autograder
+      id: python-autograder
+      if: ${{ inputs.grader == 'python' }}
+      uses: classroom-resources/autograding-python-grader@v1
+      with:
+        test-name: ${{ inputs.test-name }}
+        setup-command: ${{ inputs.setup-command }}
+        timeout: ${{ inputs.timeout }}
+
+
+    - name: c-autograder
+      id: c-autograder
+      if: ${{ inputs.grader == 'c' }}
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: ${{ inputs.test-name }}
+        setup-command: ''
+        command: make test
+        timeout: ${{ inputs.timeout }}
+
+    - name: io-autograder
+      id: io-autograder
+      if: ${{ inputs.grader == 'io' }}
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: ${{ inputs.test-name }}
+        setup-command: ${{ inputs.setup-command }}
+        command: ${{ inputs.command }}
+        input: ${{ inputs.input }}
+        expected-output: ${{ inputs.expected-output }}
+        comparison-method: ${{ inputs.comparison-method }}
+        timeout: ${{ inputs.timeout }}
+    
+
+    - name: Set Output Based on Language
+      id: set-output
+      run: |
+        if [[ "${{ inputs.grader }}" == "python" ]]; then
+          echo "::set-output name=result::${{ steps.python-autograder.outputs.result }}"
+        elif [[ "${{ inputs.grader }}" == "c" ]]; then
+          echo "::set-output name=result::${{ steps.c-autograder.outputs.result }}"
+        elif [[ "${{ inputs.grader }}" == "io" ]]; then
+          echo "::set-output name=result::${{ steps.io-autograder.outputs.result }}"
+        fi
+
+    - name: Pass?
+      run: |
+        # Decode the Base64 string
+        decoded=$(echo "${{ steps.set-output.outputs.result }}" | base64 --decode)
+        
+        # Parse the JSON to extract the status
+        status=$(echo "$decoded" | jq -r '.status')
+        
+        if [[ "$status" == "pass" ]]; then
+          echo "Test passed."
+        else
+          echo "Test failed."
+          exit 1
+        fi
