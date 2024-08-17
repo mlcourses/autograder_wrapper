@@ -30,9 +30,9 @@ inputs:
     required: false
     default: 1
 outputs:
-  result:
+  result: ${{ steps.set-output.outputs.result }}
     description: The result of the autograder, b64 encoded
-  simple_test:
+  simple_test: ${{ steps.set-output.outputs.simple_test }}
     description: simple test
 runs:
   using: "composite"
