@@ -32,6 +32,8 @@ inputs:
 outputs:
   result:
     description: The result of the autograder, b64 encoded
+  simple_test:
+    description: simple test
 runs:
   using: "composite"
   steps:
