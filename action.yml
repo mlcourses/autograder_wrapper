@@ -73,6 +73,7 @@ runs:
       id: set-output
       shell: bash
       run: |
+        echo "simple_test=Hello World" >> $GITHUB_OUTPUT
         if [[ "${{ inputs.grader }}" == "python" ]]; then
           echo "result=${{ steps.python-autograder.outputs.result }}" >> $GITHUB_OUTPUT
         elif [[ "${{ inputs.grader }}" == "c" ]]; then
