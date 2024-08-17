@@ -74,11 +74,11 @@ runs:
       shell: bash
       run: |
         if [[ "${{ inputs.grader }}" == "python" ]]; then
-          echo "::set-output name=result::${{ steps.python-autograder.outputs.result }}"
+          echo "result=${{ steps.python-autograder.outputs.result }}" >> $GITHUB_OUTPUT
         elif [[ "${{ inputs.grader }}" == "c" ]]; then
-          echo "::set-output name=result::${{ steps.c-autograder.outputs.result }}"
+          echo "result=${{ steps.c-autograder.outputs.result }}" >> $GITHUB_OUTPUT
         elif [[ "${{ inputs.grader }}" == "io" ]]; then
-          echo "::set-output name=result::${{ steps.io-autograder.outputs.result }}"
+          echo "result=${{ steps.io-autograder.outputs.result }}" >> $GITHUB_OUTPUT
         fi
 
     - name: Pass?
