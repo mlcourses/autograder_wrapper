@@ -78,6 +78,7 @@ runs:
         elif [[ "${{ inputs.grader }}" == "c" ]]; then
           echo "result=${{ steps.c-autograder.outputs.result }}" >> $env:GITHUB_OUTPUT
         elif [[ "${{ inputs.grader }}" == "io" ]]; then
+          echo "GITHUB_OUTPUT points to: $GITHUB_OUTPUT"
           echo "result=${{ steps.io-autograder.outputs.result }}" >> $env:GITHUB_OUTPUT
         fi
 
