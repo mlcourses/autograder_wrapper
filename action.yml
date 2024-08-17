@@ -83,6 +83,7 @@ runs:
         elif [[ "${{ inputs.grader }}" == "io" ]]; then
           echo "GITHUB_OUTPUT points to: $GITHUB_OUTPUT"
           echo "result=${{ steps.io-autograder.outputs.result }}" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
         fi
 
     - name: Pass?
