@@ -7,7 +7,7 @@ inputs:
     required: true
   test-name:
     description: The name of the test
-    required: true
+    required: false
   command:
     description: The command to run the test
     required: false
