@@ -14,7 +14,7 @@ inputs:
   setup-command:
     description: Command to run prior to test
     required: false
-    default: ""
+    default: :
   input:
     description: The input for the test
     required: false
@@ -52,7 +52,7 @@ runs:
       uses: classroom-resources/autograding-python-grader@v1
       with:
         args: ${{ inputs.args }}
-        setup-command: ${{ inputs.setup-command }}
+        setup-command: export PYTHONPATH=$(pwd):${PYTHONPATH} && ${{ inputs.setup-command }}
         max-score: ${{ inputs.max-score }}
         timeout: ${{ inputs.timeout }}
 
