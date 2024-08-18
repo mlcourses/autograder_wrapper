@@ -33,9 +33,6 @@ outputs:
   result: 
     value: ${{ steps.set-output.outputs.result }}
     description: The result of the autograder, b64 encoded
-  simple_test: 
-    value: ${{ steps.set-output.outputs.simple_test }}
-    description: simple test
 runs:
   using: "composite"
   steps:
@@ -77,15 +74,12 @@ runs:
       id: set-output
       shell: bash
       run: |
-        echo "simple_test=Hello World" >> $GITHUB_OUTPUT
         if [[ "${{ inputs.grader }}" == "python" ]]; then
           echo "result=${{ steps.python-autograder.outputs.result }}" >> $GITHUB_OUTPUT
         elif [[ "${{ inputs.grader }}" == "c" ]]; then
           echo "result=${{ steps.c-autograder.outputs.result }}" >> $GITHUB_OUTPUT
         elif [[ "${{ inputs.grader }}" == "io" ]]; then
-          echo "GITHUB_OUTPUT points to: $GITHUB_OUTPUT"
           echo "result=${{ steps.io-autograder.outputs.result }}" >> $GITHUB_OUTPUT
-          cat $GITHUB_OUTPUT
         fi
 
     - name: Pass?
