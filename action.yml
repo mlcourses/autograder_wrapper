@@ -14,7 +14,7 @@ inputs:
   setup-command:
     description: Command to run prior to test
     required: false
-    default: :
+    default: ":"
   input:
     description: The input for the test
     required: false
