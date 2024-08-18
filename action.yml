@@ -25,6 +25,15 @@ inputs:
     description: The method to compare outputs
     required: false
     default: "contains"
+  args:
+    description: arguments to pass to the command
+    required: false
+  entrypoint:
+    desription: entrypoint for the test
+    required: false
+  max-score:
+    description: points for full credit on the test
+    required: false
   timeout:
     description: The timeout for the test
     required: false
