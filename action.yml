@@ -58,7 +58,6 @@ runs:
     - name: command-autograder
       id: command-autograder
       if: ${{ inputs.grader == 'command' }}
-        - name: Run Autograding Tests
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: ${{ inputs.test-name }}
