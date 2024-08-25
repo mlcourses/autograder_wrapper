@@ -55,8 +55,17 @@ runs:
         setup-command: export PYTHONPATH=$(pwd):${PYTHONPATH} && ${{ inputs.setup-command }}
         max-score: ${{ inputs.max-score }}
         timeout: ${{ inputs.timeout }}
-
-
+    -name: command-autograder
+      id: command-autograder
+      if: ${{ inputs.grader == 'command' }}
+        - name: Run Autograding Tests
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: ${{ inputs.test-name }}
+        setup-command: ${{ inputs.setup-command }}
+        command: ${{ inputs.command }}
+        timeout: ${{ inputs.timeout }}
+        max-score: ${{ inputs.max-score }}
     - name: c-autograder
       id: c-autograder
       if: ${{ inputs.grader == 'c' }}
