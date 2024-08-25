@@ -95,6 +95,8 @@ runs:
       run: |
         if [[ "${{ inputs.grader }}" == "python" ]]; then
           echo "result=${{ steps.python-autograder.outputs.result }}" >> $GITHUB_OUTPUT
+        elif [[ "${{ inputs.grader }}" == "command" ]]; then
+          echo "result=${{ steps.command-autograder.outputs.result }}" >> $GITHUB_OUTPUT
         elif [[ "${{ inputs.grader }}" == "c" ]]; then
           echo "result=${{ steps.c-autograder.outputs.result }}" >> $GITHUB_OUTPUT
         elif [[ "${{ inputs.grader }}" == "io" ]]; then
